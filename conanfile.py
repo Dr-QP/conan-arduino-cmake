@@ -12,7 +12,7 @@ class ArduinoConan(ConanFile):
         "os": ["Arduino"],
         "compiler": {
             "gcc": {
-                "version": ["4.3", "4.5", "4.8", "4.9"],
+                "version": ["4.5", "4.8", "4.9"],
                 "libcxx": ["libstdc++", "libstdc++11"]
             }
         },
@@ -24,5 +24,5 @@ class ArduinoConan(ConanFile):
         self.copy("cmake/*", dst="", src=".")
 
     def package_info(self):
-        self.env_info.CMAKE_TOOLCHAIN_FILE = os.path.join(
+        self.env_info.CONAN_CMAKE_TOOLCHAIN_FILE = os.path.join(
             self.package_folder, "cmake", "ArduinoToolchain.cmake")
