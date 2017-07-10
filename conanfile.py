@@ -31,4 +31,7 @@ class ArduinoConan(ConanFile):
             self.package_folder, "cmake", "ArduinoToolchain.cmake")
 
         self.env_info.ARDUINO_DEFAULT_BOARD = str(self.settings.os.board)
+        # ARDUINO_DEFAULT_PORT
+        # ARDUINO_DEFAULT_SERIAL
+        # ARDUINO_DEFAULT_PROGRAMMER
 
