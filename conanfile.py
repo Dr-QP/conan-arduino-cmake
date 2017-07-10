@@ -19,9 +19,9 @@ class ArduinoConan(ConanFile):
         elif str(self.settings.compiler) not in ("gcc"):
             raise Exception("Not supported compiler, only gcc is available")
         elif str(self.settings.compiler.version) not in gcc_versions:
-            raise Exception("Not supported gcc compiler version, %s available") % gcc_versions
+            raise Exception("Not supported gcc compiler version, %s available" % ', '.join(gcc_versions))
         elif str(self.settings.arch) not in archs:
-            raise Exception("Not supported architecture, %s available" % archs)
+            raise Exception("Not supported architecture, %s available" % ', '.join(archs))
 
     def package(self):
         self.copy("cmake/*", dst="", src=".")
