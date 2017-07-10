@@ -2344,3 +2344,6 @@ else()
 	endif()
 endif()
 
+if (NOT $ENV{ARDUINO_BOARD_PATH} STREQUAL "")
+    register_hardware_platform($ENV{ARDUINO_BOARD_PATH})
+endif()
