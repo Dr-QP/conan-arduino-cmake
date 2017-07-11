@@ -7,7 +7,7 @@ class ArduinoConan(ConanFile):
     version = "1.0.0"
     license = "Mozilla Public License, v. 2.0 http://mozilla.org/MPL/2.0/"
     url = "https://github.com/Dr-QP/conan-arduino"
-
+    description = "Arduino build toolchain. Use it with build_requires"
     settings = "os", "compiler", "arch"
     exports_sources = "cmake/*", "!build/*", "!test_package/*", "!**/.DS_Store"
 
@@ -15,13 +15,21 @@ class ArduinoConan(ConanFile):
         archs = ("armv6", "armv7", "armv7hf", "avr")
         gcc_versions = ("4.5", "4.8", "4.9")
         if str(self.settings.os) != "Arduino":
-            raise Exception("Only 'os' Arduino supported")
+            raise Exception("OS '%s' is not supported. Only 'os' Arduino supported.", str(self.settings.os))
         elif str(self.settings.compiler) not in ("gcc"):
             raise Exception("Not supported compiler, only gcc is available")
         elif str(self.settings.compiler.version) not in gcc_versions:
             raise Exception("Not supported gcc compiler version, %s available" % ', '.join(gcc_versions))
         elif str(self.settings.arch) not in archs:
             raise Exception("Not supported architecture, %s available" % ', '.join(archs))
+
+    def package_id(self):
+        # Toolchain doesn't really depend on any of these settings, so package id should be platform agnostic
+        self.info.settings.os = ""
+        self.info.settings.os.board = ""
+        self.info.settings.arch = ""
+        self.info.settings.compiler = ""
+        self.info.settings.compiler.version = ""
 
     def package(self):
         self.copy("cmake/*", dst="", src=".")
