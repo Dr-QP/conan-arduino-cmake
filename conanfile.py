@@ -35,6 +35,7 @@ class ArduinoConan(ConanFile):
         self.copy("cmake/*", dst="", src=".")
 
     def package_info(self):
+        self.env_info.CMAKE_HOST_SYSTEM_NAME = "Arduino"
         self.env_info.CONAN_CMAKE_TOOLCHAIN_FILE = os.path.join(
             self.package_folder, "cmake", "ArduinoToolchain.cmake")
 
