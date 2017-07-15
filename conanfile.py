@@ -16,6 +16,7 @@ class ArduinoConan(ConanFile):
         "arduino_path": "ANY"
     }
     default_options = "arduino_version=none", "arduino_path=none"
+    requires = "conan-arduino-sdk/%s/anton-matosov/stable" % options["arduino_version"]
 
     arduino_path = ""
 
@@ -41,20 +42,6 @@ class ArduinoConan(ConanFile):
 
     def build(self):
         self.arduino_path = str(self.options.arduino_path)
-        if self.options.arduino_version != "none" and self.arduino_path == "none":
-            if os_info.is_linux:
-                installer = SystemPackageTool()
-                installer.install("openjdk-8-jre")
-                installer.install("openjdk-8-jre-headless")
-                installer.install("curl")
-                installer.install("xz-utils")
-
-                self.run("curl https://downloads.arduino.cc/arduino-%s-linux64.tar.xz -o /tmp/arduino.tar.xz" %
-                        self.options.arduino_version)
-                self.run("tar xvfJ /tmp/arduino.tar.xz")
-
-                self.arduino_path = "/tmp/arduino-%s/" % self.options.arduino_version
-                self.run("%s/install.sh" % self.arduino_path)
 
 
     def package(self):
@@ -62,7 +49,6 @@ class ArduinoConan(ConanFile):
 
     def package_info(self):
         self.env_info.CMAKE_HOST_SYSTEM_NAME = "Arduino"
-        self.env_info.ARDUINO_SDK_PATH = self.arduino_path
         self.env_info.CONAN_CMAKE_TOOLCHAIN_FILE = os.path.join(
             self.package_folder, "cmake", "ArduinoToolchain.cmake")
 
