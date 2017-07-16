@@ -20,7 +20,7 @@ environment:
 install:
   - set PATH=%PATH%;%PYTHON%/Scripts/
   - pip.exe install git+https://github.com/anton-matosov/conan.git --upgrade
-  - pip.exe install git+https://github.com/anton-matosov/conan_package_tools.git
+  - pip.exe install git+https://github.com/conan-io/conan-package-tools.git
   - conan user # It creates the conan data directory
 
 test_script:
