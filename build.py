@@ -2,8 +2,27 @@ from conan.packager import ConanMultiPackager
 from conans.tools import os_info
 import copy
 
+
+class ArduinoPackager(ConanMultiPackager):
+
+    def add(self, options):
+        new_options = copy.copy(options)
+        new_options["conan-arduino-toolchain:arduino_version"] = "1.8.3"
+
+        super(self.__class__, self).add(settings={
+            "os": "Arduino",
+            "os.board": "uno",
+            "compiler": "gcc",
+            "compiler.version": "4.9",
+            "compiler.libcxx": "libstdc++11",
+            "arch": "avr"
+        }, options=new_options
+        , env_vars={
+            "CC": "gcc"
+        })
+
 if __name__ == "__main__":
-    builder = ConanMultiPackager(args="--build missing")
+    builder = ArduinoPackager(args="--build missing")
     builder.add(options={
         "conan-ardiono-sdk:use_bundled_java": False
     })
