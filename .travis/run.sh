@@ -3,9 +3,6 @@
 set -e
 set -x
 
-# TEMPDIR=${TMPDIR:-/tmp}
-# . $TEMPDIR/conan_bootstrap.sh
-
 if [[ "$(uname -s)" == 'Darwin' ]]; then
     if which pyenv > /dev/null; then
         eval "$(pyenv init -)"
