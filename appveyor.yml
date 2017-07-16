@@ -5,7 +5,7 @@ environment:
     PYTHON_VERSION: "2.7.8"
     PYTHON_ARCH: "32"
 
-    CONAN_REFERENCE: "conan-arduino-sdk/1.8.3"
+    CONAN_REFERENCE: "conan-arduino-toolchain/1.0.0"
     CONAN_UPLOAD: "https://api.bintray.com/conan/anton-matosov/general"
     CONAN_USERNAME: "anton-matosov"
     CONAN_LOGIN_USERNAME: "anton-matosov"
