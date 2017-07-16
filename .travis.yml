@@ -2,9 +2,11 @@
 env:
    global:
      - CONAN_REFERENCE: "arduino/1.0.0"
+     - CONAN_UPLOAD: "https://api.bintray.com/conan/anton-matosov/general"
      - CONAN_USERNAME: "anton-matosov"
      - CONAN_LOGIN_USERNAME: "anton-matosov"
-     - CONAN_CHANNEL: "stable"
+     - CONAN_CHANNEL: "testing"
+     - CONAN_STABLE_BRANCH_PATTERN: "release/*"
      
 linux: &linux
    os: linux

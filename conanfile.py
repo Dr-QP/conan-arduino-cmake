@@ -7,7 +7,7 @@ class ArduinoConan(ConanFile):
     name = "conan-arduino-toolchain"
     version = "1.0.0"
     license = "Mozilla Public License, v. 2.0 http://mozilla.org/MPL/2.0/"
-    url = "https://github.com/Dr-QP/conan-arduino"
+    url = "https://github.com/Dr-QP/conan-arduino-toolchain"
     description = "Arduino build toolchain. Use it with build_requires"
     settings = "os", "compiler", "arch"
     exports_sources = "cmake/*", "!build/*", "!test_package/*", "!**/.DS_Store"
