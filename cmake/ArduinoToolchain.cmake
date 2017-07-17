@@ -11,11 +11,6 @@ set(CMAKE_SYSTEM_NAME Arduino)
 set(CMAKE_C_COMPILER   avr-gcc)
 set(CMAKE_CXX_COMPILER avr-g++)
 
-message("ENV CMAKE_MAKE_PROGRAM $ENV{CMAKE_MAKE_PROGRAM}")
-if (NOT CMAKE_MAKE_PROGRAM and EXISTS $ENV{CMAKE_MAKE_PROGRAM})
-    set(CMAKE_MAKE_PROGRAM $ENV{CMAKE_MAKE_PROGRAM})
-endif()
-
 # Add current directory to CMake Module path automatically
 if(EXISTS  ${CMAKE_CURRENT_LIST_DIR}/Platform/Arduino.cmake)
     set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR})
