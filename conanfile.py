@@ -16,7 +16,7 @@ class ArduinoConan(ConanFile):
         "arduino_path": "ANY"
     }
     default_options = "arduino_version=none", "arduino_path=none"
-    requires = "conan-arduino-sdk/%s/anton-matosov/stable" % options["arduino_version"]
+    requires = "conan-arduino-sdk/%s@anton-matosov/stable" % options["arduino_version"]
 
     arduino_path = ""
 
@@ -34,7 +34,7 @@ class ArduinoConan(ConanFile):
 
     def requirements(self):
         if os_info.is_windows:
-            self.requires("conan-mingw-installer/0.1/anton-matosov/stable")
+            self.requires("mingw-installer/0.1@anton-matosov/testing")
 
     def package_id(self):
         # Toolchain doesn't really depend on any of these settings, so package id should be platform agnostic
