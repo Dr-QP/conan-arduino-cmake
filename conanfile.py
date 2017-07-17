@@ -47,7 +47,6 @@ class ArduinoConan(ConanFile):
     def build(self):
         self.arduino_path = str(self.options.arduino_path)
 
-
     def package(self):
         self.copy("cmake/*", dst="", src=".")
 
@@ -57,6 +56,8 @@ class ArduinoConan(ConanFile):
             self.package_folder, "cmake", "ArduinoToolchain.cmake")
 
         self.env_info.ARDUINO_DEFAULT_BOARD = str(self.settings.os.board)
+        if os_info.is_windows:
+            self.env_info.CMAKE_MAKE_PROGRAM = os.path.join(self.deps_env_info.MINGW_PATH, "bin", "make.exe")
         # Add to the System Path:  ${ARDUINO_SDK_PATH}/hardware/tools/avr/utils/bin
 
         # ARDUINO_DEFAULT_PORT
