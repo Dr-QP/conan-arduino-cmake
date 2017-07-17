@@ -32,6 +32,10 @@ class ArduinoConan(ConanFile):
         elif str(self.settings.arch) not in archs:
             raise Exception("Not supported architecture, %s available" % ', '.join(archs))
 
+    def requirements(self):
+        if os_info.is_windows:
+            self.requires("conan-mingw-installer/0.1/anton-matosov/stable")
+
     def package_id(self):
         # Toolchain doesn't really depend on any of these settings, so package id should be platform agnostic
         self.info.settings.os = ""
@@ -53,6 +57,8 @@ class ArduinoConan(ConanFile):
             self.package_folder, "cmake", "ArduinoToolchain.cmake")
 
         self.env_info.ARDUINO_DEFAULT_BOARD = str(self.settings.os.board)
+        # Add to the System Path:  ${ARDUINO_SDK_PATH}/hardware/tools/avr/utils/bin
+
         # ARDUINO_DEFAULT_PORT
         # ARDUINO_DEFAULT_SERIAL
         # ARDUINO_DEFAULT_PROGRAMMER
