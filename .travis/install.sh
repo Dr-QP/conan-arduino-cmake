@@ -10,10 +10,6 @@ if [[ $TRAVIS == true ]]; then
         brew install pyenv-virtualenv
         brew install cmake || true
 
-        # brew tap caskroom/versions
-        brew cask install java
-        brew cask install arduino
-
         if which pyenv > /dev/null; then
             eval "$(pyenv init -)"
         fi
