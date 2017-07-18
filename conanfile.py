@@ -57,7 +57,8 @@ class ArduinoConan(ConanFile):
 
         self.env_info.ARDUINO_DEFAULT_BOARD = str(self.settings.os.board)
         if os_info.is_windows:
-            self.env_info.CMAKE_MAKE_PROGRAM = self.deps_env_info.MINGW_MAKE[0]
+            self.env_info.CMAKE_MAKE_PROGRAM = "mingw32-make.exe"
+            self.env_info.PATH += self.deps_env_info.PATH
         # Add to the System Path:  ${ARDUINO_SDK_PATH}/hardware/tools/avr/utils/bin
 
         # ARDUINO_DEFAULT_PORT
