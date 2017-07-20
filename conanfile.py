@@ -2,6 +2,8 @@ from conans import ConanFile
 from conans.tools import os_info, SystemPackageTool
 import os
 
+channel = os.getenv("CONAN_CHANNEL", "testing")
+username = os.getenv("CONAN_USERNAME", "anton-matosov")
 
 class ArduinoConan(ConanFile):
     name = "arduino-toolchain"
@@ -16,8 +18,7 @@ class ArduinoConan(ConanFile):
         "arduino_path": "ANY"
     }
     default_options = "arduino_version=none", "arduino_path=none"
-    requires = "arduino-sdk/%s@anton-matosov/stable" % options["arduino_version"]
-
+    requires = "arduino-sdk/%s@%s/%s" % (options["arduino_version"], username, channel)
     arduino_path = ""
 
     def configure(self):
