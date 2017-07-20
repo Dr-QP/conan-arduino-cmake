@@ -7,7 +7,7 @@ class ArduinoPackager(ConanMultiPackager):
 
     def add(self, options):
         new_options = copy.copy(options)
-        new_options["conan-arduino-toolchain:arduino_version"] = "1.8.3"
+        new_options["arduino-toolchain:arduino_version"] = "1.8.3"
 
         super(self.__class__, self).add(settings={
             "os": "Arduino",
