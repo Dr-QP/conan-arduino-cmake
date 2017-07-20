@@ -22,7 +22,8 @@ class ArduinoPackager(ConanMultiPackager):
         })
 
 if __name__ == "__main__":
-    builder = ArduinoPackager(args="--build missing")
+    builder = ArduinoPackager(args="--build missing",
+                              reference="arduino-toolchain/1.0.0")
     builder.add(options={
         "conan-ardiono-sdk:use_bundled_java": False
     })

@@ -2,14 +2,14 @@ from conans import ConanFile, CMake, tools
 import os
 
 
-channel = os.getenv("CONAN_CHANNEL", "stable")
+channel = os.getenv("CONAN_CHANNEL", "testing")
 username = os.getenv("CONAN_USERNAME", "anton-matosov")
 
 
 class ConanarduinosdkTestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    requires = "conan-arduino-toolchain/1.0.0@%s/%s" % (username, channel)
-    default_options = "conan-arduino-toolchain:arduino_version=1.8.3"
+    requires = "arduino-toolchain/1.0.0@%s/%s" % (username, channel)
+    default_options = "arduino-toolchain:arduino_version=1.8.3"
     generators = "cmake"
 
     def build(self):

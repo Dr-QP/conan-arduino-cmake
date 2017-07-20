@@ -5,22 +5,25 @@ environment:
     PYTHON_VERSION: "2.7.8"
     PYTHON_ARCH: "32"
 
-    CONAN_REFERENCE: "conan-arduino-toolchain/1.0.0"
-    CONAN_UPLOAD: "https://api.bintray.com/conan/anton-matosov/general"
     CONAN_USERNAME: "anton-matosov"
-    CONAN_LOGIN_USERNAME: "anton-matosov"
     CONAN_CHANNEL: "testing"
     CONAN_STABLE_BRANCH_PATTERN: "release/*"
     VS150COMNTOOLS: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\Common7\\Tools\\"
     
     matrix:
-        - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+        - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
           CONAN_VISUAL_VERSIONS: 14
+
+init:
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+# on_finish:
+#   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 install:
   - set PATH=%PATH%;%PYTHON%/Scripts/
-  - pip.exe install git+https://github.com/anton-matosov/conan.git --upgrade
-  - pip.exe install git+https://github.com/conan-io/conan-package-tools.git
+  - pip.exe install git+https://github.com/anton-matosov/conan.git@develop --upgrade
+  - pip.exe install conan_package_tools
   - conan user # It creates the conan data directory
 
 test_script:

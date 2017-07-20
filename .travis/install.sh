@@ -21,8 +21,8 @@ if [[ $TRAVIS == true ]]; then
     fi
 fi
 
-pip install git+https://github.com/anton-matosov/conan.git --upgrade
-pip install git+https://github.com/conan-io/conan-package-tools.git
+pip install git+https://github.com/anton-matosov/conan.git@develop --upgrade
+pip install conan_package_tools
 
 conan user
 
