@@ -25,11 +25,11 @@ if __name__ == "__main__":
     builder = ArduinoPackager(args="--build missing",
                               reference="arduino-toolchain/1.0.0")
     builder.add(options={
-        "conan-ardiono-sdk:use_bundled_java": False
+        "ardiono-sdk:use_bundled_java": False
     })
     if os_info.is_linux or os_info.is_windows:
         builder.add(options={
-            "conan-ardiono-sdk:use_bundled_java": True
+            "ardiono-sdk:use_bundled_java": True
         })
 
     if os_info.is_linux:
@@ -38,7 +38,7 @@ if __name__ == "__main__":
             filtered_builds.append(
                 [settings, options, env_vars, build_requires])
             new_options = copy.copy(options)
-            new_options["conan-ardiono-sdk:host_os"] = "linux32"
+            new_options["ardiono-sdk:host_os"] = "linux32"
             filtered_builds.append(
                 [settings, new_options, env_vars, build_requires])
         builder.builds = filtered_builds
