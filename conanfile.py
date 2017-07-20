@@ -18,7 +18,6 @@ class ArduinoConan(ConanFile):
         "arduino_path": "ANY"
     }
     default_options = "arduino_version=none", "arduino_path=none"
-    requires = "arduino-sdk/%s@%s/%s" % (options["arduino_version"], username, channel)
     arduino_path = ""
 
     def configure(self):
@@ -33,7 +32,8 @@ class ArduinoConan(ConanFile):
         elif str(self.settings.arch) not in archs:
             raise Exception("Not supported architecture, %s available" % ', '.join(archs))
 
-    # def requirements(self):
+    def requirements(self):
+        self.requires("arduino-sdk/%s@%s/%s" % (self.options.arduino_version, username, channel))
     #     if os_info.is_windows:
     #         self.requires("mingw-installer/0.1@anton-matosov/testing")
 
