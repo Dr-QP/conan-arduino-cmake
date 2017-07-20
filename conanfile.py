@@ -59,7 +59,7 @@ class ArduinoConan(ConanFile):
         if os_info.is_windows:
             self.env_info.CMAKE_MAKE_PROGRAM = "mingw32-make.exe"
             # self.env_info.PATH += self.deps_env_info.PATH
-            self.env_info.PATH.append("C:\MinGW\bin")
+            self.env_info.PATH.append("C:\\mingw-w64\\x86_64-6.3.0-posix-seh-rt_v5-rev1\\bin")
         # Add to the System Path:  ${ARDUINO_SDK_PATH}/hardware/tools/avr/utils/bin
 
         # ARDUINO_DEFAULT_PORT
