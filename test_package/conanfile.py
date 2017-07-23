@@ -16,8 +16,9 @@ class ConanarduinosdkTestConan(ConanFile):
         cmake = CMake(self)
         # Current dir is "test_package/build/<build_id>" and CMakeLists.txt is in "test_package"
         args = []
-        if tools.os_info.is_windows:
-            args = ["-DCMAKE_MAKE_PROGRAM=" + os.environ.get("CMAKE_MAKE_PROGRAM")]
+        custom_make = os.environ.get("CONAN_CMAKE_MAKE_PROGRAM")
+        if custom_make:
+            args = ["-DCMAKE_MAKE_PROGRAM=" + custom_make]
         cmake.configure(args=args, source_dir=self.conanfile_directory, build_dir="./")
         cmake.build()
 

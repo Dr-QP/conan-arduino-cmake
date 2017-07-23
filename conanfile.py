@@ -34,8 +34,8 @@ class ArduinoConan(ConanFile):
 
     def requirements(self):
         self.requires("arduino-sdk/%s@%s/%s" % (self.options.arduino_version, username, channel))
-    #     if os_info.is_windows:
-    #         self.requires("mingw-installer/0.1@anton-matosov/testing")
+        if os_info.is_windows:
+            self.requires("mingw-installer/0.1@anton-matosov/testing")
 
     def package_id(self):
         # Toolchain doesn't really depend on any of these settings, so package id should be platform agnostic
@@ -57,10 +57,7 @@ class ArduinoConan(ConanFile):
             self.package_folder, "cmake", "ArduinoToolchain.cmake")
 
         self.env_info.ARDUINO_DEFAULT_BOARD = str(self.settings.os.board)
-        if os_info.is_windows:
-            self.env_info.CMAKE_MAKE_PROGRAM = "mingw32-make.exe"
-            # self.env_info.PATH += self.deps_env_info.PATH
-            self.env_info.PATH.append("C:\\mingw-w64\\x86_64-6.3.0-posix-seh-rt_v5-rev1\\mingw64\\bin")
+        
         # Add to the System Path:  ${ARDUINO_SDK_PATH}/hardware/tools/avr/utils/bin
 
         # ARDUINO_DEFAULT_PORT
