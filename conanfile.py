@@ -55,9 +55,11 @@ class ArduinoConan(ConanFile):
         self.env_info.CMAKE_HOST_SYSTEM_NAME = "Arduino"
         self.env_info.CONAN_CMAKE_TOOLCHAIN_FILE = os.path.join(
             self.package_folder, "cmake", "ArduinoToolchain.cmake")
-
         self.env_info.ARDUINO_DEFAULT_BOARD = str(self.settings.os.board)
         
+        if os_info.is_windows:
+            self.env_info.CONAN_CMAKE_GENERATOR = "MinGW Makefiles"
+
         # Add to the System Path:  ${ARDUINO_SDK_PATH}/hardware/tools/avr/utils/bin
 
         # ARDUINO_DEFAULT_PORT
