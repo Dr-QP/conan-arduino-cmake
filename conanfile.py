@@ -16,21 +16,22 @@ class ArduinoConan(ConanFile):
     options = {
         "arduino_path": "ANY"
     }
-    default_options = "arduino_path=False"
+    default_options = "arduino_path=None"
     requires = "arduino-sdk/%s@%s/%s" % (version, username, channel)
 
     @property
     def arduino_path(self):
-        return os.path.expanduser(str(self.options.arduino_path))
+        path = self.options.arduino_path
+        return os.path.expanduser(str(path)) if path else None 
 
     def configure(self):
 
-        if self.options.arduino_path:
-            if os.path.exists(self.options.arduino_path):
+        if self.arduino_path:
+            if os.path.exists(self.arduino_path):
                 del self.requires["arduino-sdk"]
             else:
                 raise Exception(
-                    "Invalid specified path to Arduino: %s" % self.options.arduino_path)
+                    "Invalid specified path to Arduino: %s" % self.arduino_path)
 
         archs = ("armv6", "armv7", "armv7hf", "avr")
         gcc_versions = ("4.9")
@@ -44,7 +45,6 @@ class ArduinoConan(ConanFile):
             raise Exception("Not supported architecture, %s available" % ', '.join(archs))
 
     def requirements(self):
-        self.requires()
         if os_info.is_windows:
             self.requires("mingw-installer/1.0.0@conan/stable")
 
@@ -56,9 +56,6 @@ class ArduinoConan(ConanFile):
         self.info.settings.compiler = ""
         self.info.settings.compiler.version = ""
 
-    def build(self):
-        self.arduino_path = str(self.options.arduino_path)
-
     def package(self):
         self.copy("cmake/*", dst="", src=".")
 
@@ -67,9 +64,10 @@ class ArduinoConan(ConanFile):
         self.env_info.CONAN_CMAKE_TOOLCHAIN_FILE = os.path.join(
             self.package_folder, "cmake", "ArduinoToolchain.cmake")
         self.env_info.ARDUINO_DEFAULT_BOARD = str(self.settings.os.board)
-        
-        arduino_sdk_path = os.getenv("CONAN_ARDUINO_SDK_PATH")
-        self.env_info.PATH.append(os.path.join(arduino_sdk_path))
+
+        if self.arduino_path:
+            self.env_info.CONAN_ARDUINO_SDK_PATH = str(self.arduino_path)
+
         if os_info.is_windows:
             self.env_info.CONAN_CMAKE_GENERATOR = "MinGW Makefiles"
 
