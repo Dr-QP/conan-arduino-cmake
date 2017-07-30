@@ -5,10 +5,7 @@ import copy
 
 class ArduinoPackager(ConanMultiPackager):
 
-    def add(self, options):
-        new_options = copy.copy(options)
-        new_options["arduino-toolchain:arduino_version"] = "1.8.3"
-
+    def add(self, options={}):
         super(self.__class__, self).add(settings={
             "os": "Arduino",
             "os.board": "uno",
@@ -16,21 +13,15 @@ class ArduinoPackager(ConanMultiPackager):
             "compiler.version": "4.9",
             "compiler.libcxx": "libstdc++11",
             "arch": "avr"
-        }, options=new_options
+        }, options=options
         , env_vars={
             "CC": "gcc"
         })
 
 if __name__ == "__main__":
     builder = ArduinoPackager(args="--build missing",
-                              reference="arduino-toolchain/1.0.0")
-    builder.add(options={
-        "ardiono-sdk:use_bundled_java": False
-    })
-    if os_info.is_linux or os_info.is_windows:
-        builder.add(options={
-            "ardiono-sdk:use_bundled_java": True
-        })
+                              reference="arduino-toolchain/1.8.3")
+    builder.add()
 
     if os_info.is_linux:
         filtered_builds = []
