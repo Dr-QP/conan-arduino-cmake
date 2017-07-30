@@ -7,20 +7,31 @@ username = os.getenv("CONAN_USERNAME", "anton-matosov")
 
 class ArduinoConan(ConanFile):
     name = "arduino-toolchain"
-    version = "1.0.0"
+    version = "1.8.3"
     license = "Mozilla Public License, v. 2.0 http://mozilla.org/MPL/2.0/"
     url = "https://github.com/Dr-QP/conan-arduino-toolchain"
     description = "Arduino build toolchain. Use it with build_requires"
     settings = "os", "compiler", "arch"
     exports_sources = "cmake/*", "!build/*", "!test_package/*", "!**/.DS_Store"
     options = {
-        "arduino_version": ["1.8.3", "ANY", "none"],
         "arduino_path": "ANY"
     }
-    default_options = "arduino_version=none", "arduino_path=none"
-    arduino_path = ""
+    default_options = "arduino_path=False"
+    requires = "arduino-sdk/%s@%s/%s" % (version, username, channel)
+
+    @property
+    def arduino_path(self):
+        return os.path.expanduser(str(self.options.arduino_path))
 
     def configure(self):
+
+        if self.options.arduino_path:
+            if os.path.exists(self.options.arduino_path):
+                del self.requires["arduino-sdk"]
+            else:
+                raise Exception(
+                    "Invalid specified path to Arduino: %s" % self.options.arduino_path)
+
         archs = ("armv6", "armv7", "armv7hf", "avr")
         gcc_versions = ("4.5", "4.8", "4.9")
         if str(self.settings.os) != "Arduino":
@@ -33,9 +44,9 @@ class ArduinoConan(ConanFile):
             raise Exception("Not supported architecture, %s available" % ', '.join(archs))
 
     def requirements(self):
-        self.requires("arduino-sdk/%s@%s/%s" % (self.options.arduino_version, username, channel))
+        self.requires()
         if os_info.is_windows:
-            self.requires("mingw-installer/0.1@anton-matosov/testing")
+            self.requires("mingw-installer/1.0.0@conan/stable")
 
     def package_id(self):
         # Toolchain doesn't really depend on any of these settings, so package id should be platform agnostic
@@ -57,10 +68,10 @@ class ArduinoConan(ConanFile):
             self.package_folder, "cmake", "ArduinoToolchain.cmake")
         self.env_info.ARDUINO_DEFAULT_BOARD = str(self.settings.os.board)
         
+        arduino_sdk_path = os.getenv("CONAN_ARDUINO_SDK_PATH")
+        self.env_info.PATH.append(os.path.join(arduino_sdk_path))
         if os_info.is_windows:
             self.env_info.CONAN_CMAKE_GENERATOR = "MinGW Makefiles"
-
-        # Add to the System Path:  ${ARDUINO_SDK_PATH}/hardware/tools/avr/utils/bin
 
         # ARDUINO_DEFAULT_PORT
         # ARDUINO_DEFAULT_SERIAL
