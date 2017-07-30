@@ -22,12 +22,7 @@ endif()
 if(UNIX)
     include(Platform/UnixPaths)
     if(APPLE)
-        list(APPEND CMAKE_SYSTEM_PREFIX_PATH $ENV{CONAN_ARDUINO_SDK_PATH}
-                                             ~/Applications
-                                             /Applications
-                                             /Developer/Applications
-                                             /sw        # Fink
-                                             /opt/local) # MacPorts
+        list(APPEND CMAKE_SYSTEM_PREFIX_PATH $ENV{CONAN_ARDUINO_SDK_PATH})
     endif()
 elseif(WIN32)
     include(Platform/WindowsPaths)
@@ -54,16 +49,9 @@ if(NOT ARDUINO_SDK_PATH)
     endforeach()
 
     if(UNIX)
-        file(GLOB SDK_PATH_HINTS $ENV{CONAN_ARDUINO_SDK_PATH}/arduino*
-            /usr/share/arduino*
-            /opt/local/arduino*
-            /opt/arduino*
-            /usr/local/share/arduino*)
+        file(GLOB SDK_PATH_HINTS $ENV{CONAN_ARDUINO_SDK_PATH}/arduino*)
     elseif(WIN32)
-        set(SDK_PATH_HINTS "$ENV{CONAN_ARDUINO_SDK_PATH}\\Arduino"
-            "C:\\Program Files\\Arduino"
-            "C:\\Program Files (x86)\\Arduino"
-            )
+        set(SDK_PATH_HINTS "$ENV{CONAN_ARDUINO_SDK_PATH}\\Arduino")
     endif()
     list(SORT SDK_PATH_HINTS)
     list(REVERSE SDK_PATH_HINTS)
