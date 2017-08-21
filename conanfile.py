@@ -3,7 +3,7 @@ from conans.tools import os_info, SystemPackageTool
 import os
 
 channel = os.getenv("CONAN_CHANNEL", "testing")
-username = os.getenv("CONAN_USERNAME", "anton-matosov")
+username = os.getenv("CONAN_USERNAME", "conan")
 
 class ArduinoConan(ConanFile):
     name = "arduino-toolchain"
