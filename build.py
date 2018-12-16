@@ -19,9 +19,9 @@ class ArduinoPackager(ConanMultiPackager):
         })
 
 if __name__ == "__main__":
-    builder = ArduinoPackager(args="--build missing",
-                              reference="arduino-toolchain/1.8.3")
+    builder = ArduinoPackager(reference="arduino-toolchain/1.8.3")
     builder.add()
+    builder.build_policy = "missing"
 
     if os_info.is_linux:
         filtered_builds = []
