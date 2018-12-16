@@ -6,11 +6,11 @@ import copy
 class ArduinoPackager(ConanMultiPackager):
 
     def add(self, options={}):
-        super.add(settings={
+        super().add(settings={
             "os": "Arduino",
             "os.board": "uno",
             "compiler": "gcc",
-            "compiler.version": "4.9",
+            "compiler.version": "5.4",
             "compiler.libcxx": "libstdc++11",
             "arch": "avr"
         }, options=options
@@ -19,8 +19,7 @@ class ArduinoPackager(ConanMultiPackager):
         })
 
 if __name__ == "__main__":
-    builder = ArduinoPackager(reference="arduino-toolchain/1.8.8")
-    builder.build_policy = "missing"
+    builder = ArduinoPackager(build_policy = "missing")
     builder.add()
 
     if os_info.is_linux:

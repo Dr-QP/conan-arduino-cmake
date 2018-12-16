@@ -34,7 +34,7 @@ class ArduinoConan(ConanFile):
                     "Invalid specified path to Arduino: %s" % self.arduino_path)
 
         archs = ("armv6", "armv7", "armv7hf", "avr")
-        gcc_versions = ("4.9")
+        gcc_versions = ("5.4")
         if str(self.settings.os) != "Arduino":
             raise Exception("OS '%s' is not supported. Only 'os' Arduino supported.", str(self.settings.os))
         elif str(self.settings.compiler) not in ("gcc"):
