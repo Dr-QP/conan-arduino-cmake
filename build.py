@@ -6,7 +6,7 @@ import copy
 class ArduinoPackager(ConanMultiPackager):
 
     def add(self, options={}):
-        super(self.__class__, self).add(settings={
+        super.add(settings={
             "os": "Arduino",
             "os.board": "uno",
             "compiler": "gcc",
@@ -19,9 +19,9 @@ class ArduinoPackager(ConanMultiPackager):
         })
 
 if __name__ == "__main__":
-    builder = ArduinoPackager(reference="arduino-toolchain/1.8.3")
-    builder.add()
+    builder = ArduinoPackager(reference="arduino-toolchain/1.8.8")
     builder.build_policy = "missing"
+    builder.add()
 
     if os_info.is_linux:
         filtered_builds = []

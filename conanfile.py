@@ -7,7 +7,7 @@ username = os.getenv("CONAN_USERNAME", "conan")
 
 class ArduinoConan(ConanFile):
     name = "arduino-toolchain"
-    version = "1.8.3"
+    version = "1.8.8"
     license = "Mozilla Public License, v. 2.0 http://mozilla.org/MPL/2.0/"
     url = "https://github.com/Dr-QP/conan-arduino-toolchain"
     description = "Arduino build toolchain. Use it with build_requires"
