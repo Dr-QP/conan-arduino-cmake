@@ -1,15 +1,15 @@
 
 env:
-   global:
-     - CONAN_USERNAME: "conan"
-     - CONAN_CHANNEL: "testing"
-     - CONAN_STABLE_BRANCH_PATTERN: "release/*"
-     
+  global:
+    - CONAN_USERNAME: "conan"
+    - CONAN_CHANNEL: "testing"
+    - CONAN_STABLE_BRANCH_PATTERN: "release/*"
+
 linux: &linux
    os: linux
    sudo: required
    language: python
-   python: "3.7"
+   python: "3.6"
    services:
      - docker
 osx: &osx
@@ -18,7 +18,8 @@ osx: &osx
 matrix:
    include:
       - <<: *linux
-        env: CONAN_GCC_VERSIONS=4.9
+        env: CONAN_DOCKER_IMAGE=conanio/gcc54
+
       - <<: *osx
         osx_image: xcode8.3
 

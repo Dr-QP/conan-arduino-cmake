@@ -1,23 +1,28 @@
 build: false
 
 environment:
-    PYTHON: "C:\\Python27"
-    PYTHON_VERSION: "2.7.8"
+    PYTHON: "C:\\Python37"
+    PYTHON_VERSION: "3.7.0"
     PYTHON_ARCH: "32"
 
     CONAN_USERNAME: "conan"
     CONAN_CHANNEL: "testing"
     CONAN_STABLE_BRANCH_PATTERN: "release/*"
-    VS150COMNTOOLS: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\Common7\\Tools\\"
-    
+
     matrix:
         - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
           CONAN_VISUAL_VERSIONS: 14
 
+# init:
+#   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+# on_finish:
+#   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
 install:
+  - echo CONAN_VISUAL_VERSIONS=%CONAN_VISUAL_VERSIONS%
   - set PATH=%PATH%;%PYTHON%/Scripts/
-  - pip.exe install git+https://github.com/anton-matosov/conan.git@develop --upgrade
-  - pip.exe install conan_package_tools
+  - pip.exe install conan conan_package_tools
   - conan user # It creates the conan data directory
 
 test_script:
