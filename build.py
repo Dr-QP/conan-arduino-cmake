@@ -19,7 +19,7 @@ class ArduinoPackager(ConanMultiPackager):
         })
 
 if __name__ == "__main__":
-    builder = ArduinoPackager(build_policy = "missing")
+    builder = ArduinoPackager(build_policy = "outdated")
     builder.add()
 
     if os_info.is_linux:
