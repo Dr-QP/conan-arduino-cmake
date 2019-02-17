@@ -28,7 +28,7 @@ if __name__ == "__main__":
             filtered_builds.append(
                 [settings, options, env_vars, build_requires])
             new_options = copy.copy(options)
-            new_options["ardiono-sdk:host_os"] = "linux32"
+            new_options["arduino-sdk:host_os"] = "linux32"
             filtered_builds.append(
                 [settings, new_options, env_vars, build_requires])
         builder.builds = filtered_builds
