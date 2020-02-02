@@ -18,10 +18,9 @@ osx: &osx
 matrix:
    include:
       - <<: *linux
-        env: CONAN_GCC_VERSIONS=5
+        env: CONAN_GCC_VERSIONS=7
 
       - <<: *osx
-        osx_image: xcode8.3
 
 install:
   - chmod +x .travis/install.sh
