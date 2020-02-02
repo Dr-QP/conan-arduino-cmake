@@ -10,7 +10,7 @@ class ArduinoPackager(ConanMultiPackager):
             "os": "Arduino",
             "os.board": "uno",
             "compiler": "gcc",
-            "compiler.version": "5.4",
+            "compiler.version": "7.3",
             "compiler.libcxx": "libstdc++11",
             "arch": "avr"
         }, options=options
