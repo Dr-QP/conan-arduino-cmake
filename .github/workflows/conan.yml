@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+      - release/**
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+        matrix:
+            os: [macos-latest, windows-latest, ubuntu-18.04]
+    env:
+        CONAN_USERNAME: "conan"
+        CONAN_CHANNEL: "testing"
+        CONAN_STABLE_BRANCH_PATTERN: "release/*"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '>=3.7'
+          architecture: 'x64'
+
+      - name: Install CPT
+        run: pip install conan_package_tools
+
+      - name: Build only
+        if: github.event_name == 'pull_request'
+        run: python build.py
+
+      - name: Build and publish
+        if: github.event_name == 'push'
+        env:
+          CONAN_UPLOAD: https://api.bintray.com/conan/anton-matosov/general
+          CONAN_LOGIN_USERNAME: ${{ secrets.CONAN_LOGIN_USERNAME }}
+          CONAN_PASSWORD: ${{ secrets.CONAN_PASSWORD }}
+        run: python build.py
