@@ -35,6 +35,8 @@ jobs:
 
       - name: Build only
         if: github.event_name == 'pull_request'
+        env:
+          CONAN_REMOTES: https://api.bintray.com/conan/anton-matosov/general
         run: python build.py
 
       - name: Build and publish
