@@ -20,10 +20,6 @@ class ArduinoConan(ConanFile):
         if str(self.settings.os) != "Arduino":
             raise ConanInvalidConfiguration(f"OS '{self.settings.os}' is not supported, only `Arduino` is supported.")
 
-    def requirements(self):
-        if os_info.is_windows:
-            self.requires("mingw-installer/1.0.0@conan/stable")
-
     def package_id(self):
         # Toolchain doesn't really depend on any of these settings, so package id should be platform agnostic
         self.info.header_only()

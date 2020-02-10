@@ -4,8 +4,6 @@ import copy
 import os
 
 
-username = os.getenv("CONAN_USERNAME", "conan")
-channel = os.getenv("CONAN_CHANNEL", "testing")
 
 if __name__ == "__main__":
     builder = ConanMultiPackager(build_policy="missing")
@@ -17,14 +15,21 @@ if __name__ == "__main__":
         "compiler.libcxx": "libstdc++11",
         "arch": "avr"
     }
+
+    username = os.getenv("CONAN_USERNAME", "conan")
+    channel = os.getenv("CONAN_CHANNEL", "testing")
     build_requires = {
         "*": [f"arduino-sdk/1.8.11@{username}/{channel}",
         "cmake_installer/3.16.3@conan/stable"
         ]
     }
+
     if os_info.is_linux:
         builder.add(settings, options={"arduino-sdk:host_os": "linux32"}, build_requires=build_requires)
         builder.add(settings, options={"arduino-sdk:host_os": "linux64"}, build_requires=build_requires)
+    elif os_info.is_windows:
+        build_requires["*"].append("mingw-installer/1.0.0@conan/stable")
+        builder.add(settings, build_requires=build_requires)
     else:
         builder.add(settings, build_requires=build_requires)
 
