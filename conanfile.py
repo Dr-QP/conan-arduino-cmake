@@ -1,48 +1,24 @@
 from conans import ConanFile
 from conans.tools import os_info, SystemPackageTool
+from conans.errors import ConanInvalidConfiguration
 import os
-
-channel = os.getenv("CONAN_CHANNEL", "testing")
-username = os.getenv("CONAN_USERNAME", "conan")
 
 class ArduinoConan(ConanFile):
     name = "arduino-toolchain"
-    version = "1.8.11"
+    version = "2.0.0"
     license = "Mozilla Public License, v. 2.0 http://mozilla.org/MPL/2.0/"
     url = "https://github.com/Dr-QP/conan-arduino-toolchain"
     description = "Arduino build toolchain. Use it with build_requires"
-    settings = "os", "compiler", "arch"
-    exports_sources = "cmake/*", "!build/*", "!test_package/*", "!**/.DS_Store"
-    options = {
-        "arduino_path": "ANY"
-    }
-    default_options = "arduino_path=None"
-    requires = "arduino-sdk/%s@%s/%s" % (version, username, channel)
-
-    @property
-    def arduino_path(self):
-        path = self.options.arduino_path
-        return os.path.expanduser(str(path)) if path else None 
+    settings = "os"
+    exports_sources = "cmake/*"
 
     def configure(self):
+        import sys
+        is_64bits = sys.maxsize > 2 ** 32
 
-        if self.arduino_path:
-            if os.path.exists(self.arduino_path):
-                del self.requires["arduino-sdk"]
-            else:
-                raise Exception(
-                    "Invalid specified path to Arduino: %s" % self.arduino_path)
 
-        archs = ("armv6", "armv7", "armv7hf", "avr")
-        gcc_versions = ("7.3")
         if str(self.settings.os) != "Arduino":
-            raise Exception("OS '%s' is not supported. Only 'os' Arduino supported.", str(self.settings.os))
-        elif str(self.settings.compiler) not in ("gcc"):
-            raise Exception("Not supported compiler, only gcc is available")
-        elif str(self.settings.compiler.version) not in gcc_versions:
-            raise Exception("Not supported gcc compiler version, only %s is available" % ', '.join(gcc_versions))
-        elif str(self.settings.arch) not in archs:
-            raise Exception("Not supported architecture, %s available" % ', '.join(archs))
+            raise ConanInvalidConfiguration(f"OS '{self.settings.os}' is not supported, only `Arduino` is supported.")
 
     def requirements(self):
         if os_info.is_windows:
@@ -50,11 +26,7 @@ class ArduinoConan(ConanFile):
 
     def package_id(self):
         # Toolchain doesn't really depend on any of these settings, so package id should be platform agnostic
-        self.info.settings.os = ""
-        self.info.settings.os.board = ""
-        self.info.settings.arch = ""
-        self.info.settings.compiler = ""
-        self.info.settings.compiler.version = ""
+        self.info.header_only()
 
     def package(self):
         self.copy("cmake/*", dst="", src=".")
@@ -64,14 +36,3 @@ class ArduinoConan(ConanFile):
         self.env_info.CONAN_CMAKE_TOOLCHAIN_FILE = os.path.join(
             self.package_folder, "cmake", "ArduinoToolchain.cmake")
         self.env_info.ARDUINO_DEFAULT_BOARD = str(self.settings.os.board)
-
-        if self.arduino_path:
-            self.env_info.CONAN_ARDUINO_SDK_PATH = str(self.arduino_path)
-
-        if os_info.is_windows:
-            self.env_info.CONAN_CMAKE_GENERATOR = "MinGW Makefiles"
-
-        # ARDUINO_DEFAULT_PORT
-        # ARDUINO_DEFAULT_SERIAL
-        # ARDUINO_DEFAULT_PROGRAMMER
-

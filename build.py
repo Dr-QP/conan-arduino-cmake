@@ -1,36 +1,31 @@
 from conan.packager import ConanMultiPackager
 from conans.tools import os_info
 import copy
+import os
 
 
-class ArduinoPackager(ConanMultiPackager):
-
-    def add(self, options={}):
-        super().add(settings={
-            "os": "Arduino",
-            "os.board": "uno",
-            "compiler": "gcc",
-            "compiler.version": "7.3",
-            "compiler.libcxx": "libstdc++11",
-            "arch": "avr"
-        }, options=options
-        , env_vars={
-            "CC": "gcc"
-        })
+username = os.getenv("CONAN_USERNAME", "conan")
+channel = os.getenv("CONAN_CHANNEL", "testing")
 
 if __name__ == "__main__":
-    builder = ArduinoPackager(build_policy = "outdated")
-    builder.add()
-
+    builder = ConanMultiPackager(build_policy="missing")
+    settings = {
+        "os": "Arduino",
+        "os.board": "uno",
+        "compiler": "gcc",
+        "compiler.version": "7.3",
+        "compiler.libcxx": "libstdc++11",
+        "arch": "avr"
+    }
+    build_requires = {
+        "*": [f"arduino-sdk/1.8.11@{username}/{channel}",
+        "cmake_installer/3.16.3@conan/stable"
+        ]
+    }
     if os_info.is_linux:
-        filtered_builds = []
-        for settings, options, env_vars, build_requires in builder.builds:
-            filtered_builds.append(
-                [settings, options, env_vars, build_requires])
-            new_options = copy.copy(options)
-            new_options["arduino-sdk:host_os"] = "linux32"
-            filtered_builds.append(
-                [settings, new_options, env_vars, build_requires])
-        builder.builds = filtered_builds
+        builder.add(settings, options={"arduino-sdk:host_os": "linux32"}, build_requires=build_requires)
+        builder.add(settings, options={"arduino-sdk:host_os": "linux64"}, build_requires=build_requires)
+    else:
+        builder.add(settings, build_requires=build_requires)
 
     builder.run()
