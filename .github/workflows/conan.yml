@@ -4,14 +4,15 @@ on:
   push:
     branches:
       - master
-      - develop
-      - release/**
+      - testing/**
     paths-ignore:
       - '**.md'
   pull_request:
     paths-ignore:
       - '**.md'
-
+  release:
+    types:
+      - published
 
 jobs:
   build:
@@ -22,27 +23,33 @@ jobs:
     env:
         CONAN_USERNAME: "conan"
         CONAN_CHANNEL: "testing"
-        CONAN_STABLE_BRANCH_PATTERN: "release/*"
+        CONAN_LOGIN_USERNAME: ${{ secrets.CONAN_LOGIN_USERNAME }}
+        CONAN_PASSWORD: ${{ secrets.CONAN_PASSWORD }}
+        CONAN_STABLE_BRANCH_PATTERN: "v\\d+\\.\\d+\\.\\d+"
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v1
         with:
-          python-version: '>=3.7'
+          python-version: '3.7'
           architecture: 'x64'
 
       - name: Install CPT
-        run: pip install conan_package_tools
+        run: |
+          pip install 'conan<1.21' 'conan_package_tools<0.31' --upgrade
 
       - name: Build only
         if: github.event_name == 'pull_request'
-        env:
-          CONAN_REMOTES: https://api.bintray.com/conan/anton-matosov/general
         run: python build.py
 
       - name: Build and publish
         if: github.event_name == 'push'
         env:
           CONAN_UPLOAD: https://api.bintray.com/conan/anton-matosov/general
-          CONAN_LOGIN_USERNAME: ${{ secrets.CONAN_LOGIN_USERNAME }}
-          CONAN_PASSWORD: ${{ secrets.CONAN_PASSWORD }}
+        run: python build.py
+
+      - name: Build and publish stable
+        if: github.event_name == 'release'
+        env:
+          CONAN_CHANNEL: "stable"
+          CONAN_UPLOAD: https://api.bintray.com/conan/anton-matosov/general
         run: python build.py
