@@ -23,6 +23,7 @@ jobs:
     env:
         CONAN_USERNAME: "conan"
         CONAN_CHANNEL: "testing"
+        CONAN_REMOTES: https://api.bintray.com/conan/anton-matosov/general
         CONAN_LOGIN_USERNAME: ${{ secrets.CONAN_LOGIN_USERNAME }}
         CONAN_PASSWORD: ${{ secrets.CONAN_PASSWORD }}
         CONAN_STABLE_BRANCH_PATTERN: "v\\d+\\.\\d+\\.\\d+"
