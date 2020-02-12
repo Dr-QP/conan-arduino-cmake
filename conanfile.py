@@ -28,7 +28,6 @@ class ArduinoConan(ConanFile):
         self.copy("cmake/*", dst="", src=".")
 
     def package_info(self):
-        self.env_info.CMAKE_HOST_SYSTEM_NAME = "Arduino"
         self.env_info.CONAN_CMAKE_TOOLCHAIN_FILE = os.path.join(
             self.package_folder, "cmake", "ArduinoToolchain.cmake")
-        self.env_info.ARDUINO_DEFAULT_BOARD = str(self.settings.os.board)
+        self.env_info.ARDUINO_DEFAULT_BOARD = str(self.settings.os.board) # TODO: remote in future updates
