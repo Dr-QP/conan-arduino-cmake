@@ -9,7 +9,7 @@ class ConanarduinosdkTestConan(ConanFile):
     def build(self):
         cmake = CMake(self)
         cmake.configure()
-        cmake.build()
+        cmake.build(target="Sketch")
 
     def imports(self):
         self.copy("*.dll", dst="bin", src="bin")

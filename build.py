@@ -6,7 +6,7 @@ import os
 
 
 if __name__ == "__main__":
-    builder = ConanMultiPackager(build_policy="missing")
+    builder = ConanMultiPackager(build_policy="outdated")
     settings = {
         "os": "Arduino",
         "os.board": "uno",
