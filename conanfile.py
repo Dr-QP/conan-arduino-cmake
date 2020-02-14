@@ -4,11 +4,11 @@ from conans.errors import ConanInvalidConfiguration
 import os
 
 class ArduinoConan(ConanFile):
-    name = "arduino-toolchain"
-    version = "2.0.0"
+    name = "arduino-cmake"
+    version = "1.0.0"
     license = "Mozilla Public License, v. 2.0 http://mozilla.org/MPL/2.0/"
-    url = "https://github.com/Dr-QP/conan-arduino-toolchain"
-    description = "Arduino build toolchain. Use it with build_requires"
+    url = "https://github.com/Dr-QP/conan-arduino-cmake"
+    description = "Arduino cmake toolchain. Use it with build_requires"
     settings = "os"
     exports_sources = "cmake/*"
 

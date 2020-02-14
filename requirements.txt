@@ -1,0 +1,2 @@
+conan<1.21
+conan_package_tools<0.31
