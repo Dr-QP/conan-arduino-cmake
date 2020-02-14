@@ -16,11 +16,10 @@ if __name__ == "__main__":
         "arch": "avr"
     }
 
-    username = os.getenv("CONAN_USERNAME", "conan")
-    channel = os.getenv("CONAN_CHANNEL", "testing")
     build_requires = {
-        "*": [f"arduino-sdk/1.8.11@{username}/{channel}",
-        "cmake_installer/3.16.3@conan/stable"
+        "*": [
+            "arduino-sdk/1.8.11@conan/stable",
+            "cmake_installer/3.16.3@conan/stable"
         ]
     }
 
