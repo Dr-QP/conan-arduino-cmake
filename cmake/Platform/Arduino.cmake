@@ -2264,9 +2264,15 @@ if(NOT ARDUINO_FOUND AND ARDUINO_SDK_PATH)
         set(CMAKE_OBJCOPY ${AVROBJCOPY_PROGRAM} CACHE PATH "OBJCOPY Program for firmware convertion in hex")
     endif(NOT CMAKE_OBJCOPY)
 
-    set(ARDUINO_DEFAULT_BOARD   $ENV{ARDUINO_DEFAULT_BOARD} CACHE STRING "Default Arduino Board ID when not specified.")
-    set(ARDUINO_DEFAULT_PORT    $ENV{ARDUINO_DEFAULT_PORT}  CACHE STRING "Default Arduino port when not specified.")
-    set(ARDUINO_DEFAULT_SERIAL  $ENV{ARDUINO_DEFAULT_SERIAL} CACHE STRING "Default Arduino Serial command when not specified.")
+    if (DEFINED ENV{ARDUINO_DEFAULT_BOARD})
+        set(_DEFAULT_BOARD $ENV{ARDUINO_DEFAULT_BOARD})
+    else ()
+        set(_DEFAULT_BOARD uno)
+    endif()
+
+    set(ARDUINO_DEFAULT_BOARD ${_DEFAULT_BOARD} CACHE STRING "Default Arduino Board ID when not specified.")
+    set(ARDUINO_DEFAULT_PORT $ENV{ARDUINO_DEFAULT_PORT} CACHE STRING "Default Arduino port when not specified.")
+    set(ARDUINO_DEFAULT_SERIAL $ENV{ARDUINO_DEFAULT_SERIAL} CACHE STRING "Default Arduino Serial command when not specified.")
     set(ARDUINO_DEFAULT_PROGRAMMER $ENV{ARDUINO_DEFAULT_PROGRAMMER} CACHE STRING "Default Arduino Programmer ID when not specified.")
 
     # Ensure that all required paths are found
