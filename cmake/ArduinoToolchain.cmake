@@ -16,33 +16,16 @@ if(EXISTS  ${CMAKE_CURRENT_LIST_DIR}/Platform/Arduino.cmake)
     set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR})
 endif()
 
-set(CONAN_ARDUINO_SDK_PATH $ENV{CONAN_ARDUINO_SDK_PATH})
-
-#=============================================================================#
-#                         System Paths                                        #
-#=============================================================================#
-if(UNIX)
-    include(Platform/UnixPaths)
-    if(APPLE)
-        list(APPEND CMAKE_SYSTEM_PREFIX_PATH $CONAN_ARDUINO_SDK_PATH)
-    endif()
-elseif(WIN32)
-    include(Platform/WindowsPaths)
-endif()
-
-find_path(ARDUINO_SDK_PATH
-          NAMES lib/version.txt
-          PATH_SUFFIXES share/arduino
-                        Contents/Java
-          HINTS ${CONAN_ARDUINO_SDK_PATH}
-          DOC "Arduino SDK path.")
+if (NOT ARDUINO_SDK_PATH)
+    set(ARDUINO_SDK_PATH $ENV{ARDUINO_SDK_PATH} CACHE STRING "Arduino SDK path")
+endif ()
 
 if(ARDUINO_SDK_PATH)
     list(APPEND CMAKE_SYSTEM_PREFIX_PATH ${ARDUINO_SDK_PATH}/hardware/tools/avr)
     list(APPEND CMAKE_SYSTEM_PREFIX_PATH ${ARDUINO_SDK_PATH}/hardware/tools/avr/utils)
     set(CMAKE_SYSTEM_PREFIX_PATH ${CMAKE_SYSTEM_PREFIX_PATH} CACHE STRING "Updated CMAKE_SYSTEM_PREFIX_PATH with arduino toolchain")
 else()
-    message(FATAL_ERROR "Could not find Arduino SDK (set ARDUINO_SDK_PATH)!")
+    message(FATAL_ERROR "Could not find Arduino SDK (set ARDUINO_SDK_PATH via cmake or environmnet)!")
 endif()
 
 set(ARDUINO_CPUMENU)
