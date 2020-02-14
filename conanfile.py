@@ -5,7 +5,7 @@ import os
 
 class ArduinoConan(ConanFile):
     name = "arduino-cmake"
-    version = "1.0.0"
+    version = "1.0.1"
     license = "Mozilla Public License, v. 2.0 http://mozilla.org/MPL/2.0/"
     url = "https://github.com/Dr-QP/conan-arduino-cmake"
     description = "Arduino cmake toolchain. Use it with build_requires"
